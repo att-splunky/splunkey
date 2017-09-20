@@ -1,0 +1,8 @@
+<CreateASRforPortOrT1Response xmlns="http://csi.cingular.com/CSI/Namespaces/Container/Private/ACMSSPECIAL/CreateASRforPortOrT1Response.xsd">
+  <ASR-TYPE>UE</ASR-TYPE>
+  <USO>47549614</USO>
+  <CKL>0002</CKL>
+  <ACTION>N</ACTION>
+  <SUPP></SUPP>
+  <STATUS>S</STATUS>
+</CreateASRforPortOrT1Response>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui">    
+
+<ui:define name="body">
+
+<h:form id="form">
+  <div class="container">
+    <div>
+      <h1>SPLUNKY</h1>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <p:messages globalOnly="true" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p:panel header="You can Splunky your conversation here" styleClass="form-horizontal">
+          <div class="form-group">
+            <p:outputLabel value="Conversation Id" for="conversationid" styleClass="col-sm-3 control-label" />
+            <div class="col-sm-9">
+              <p:inputText id="conversationid" value="#{indexView.conversationid}" pt:placeholder="Input conversation id " required="true">
+                <f:validateLength minimum="0" />
+              </p:inputText>
+              <p:messages for="conversationid" />
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <p:commandButton value="Search" action="#{indexBean.submit}" ajax="false"
+                  icon="fa fa-search" />
+              <p:commandButton value="Reset" actionListener="#{indexBean.reset}" update="@form"
+                  icon="fa fa-trash" immediate="true" /><!-- 
+              <p:button value="Go to home" outcome="/index" 
+                  icon="fa fa-home" /> -->
+            </div>
+          </div>          
+          
+        </p:panel>
+      </div>
+      
+      <div class="col-md-6">
+        <p:panel header="Searched values saved in view scope">
+          <p:dataList value="#{indexView.submittedValues}" var="value" type="ordered">
+            <h:outputText value="#{value}" />
+          </p:dataList>
+        </p:panel>
+      </div>
+      
+    </div>
+	<div class="row">
+      <div class="col-md-6">
+        <p:panel header="Multiple inputs with commma(,) separate" styleClass="form-horizontal">
+        <div class="form-group">
+            <p:outputLabel value="Input Parameter" for="inputparameter" styleClass="col-sm-3 control-label" />
+            <div class="col-sm-9">
+              <p:inputText id="inputparameter" value="#{indexView.inputparameter}" pt:placeholder="Input parameters" required="false">
+                <f:validateLength minimum="0" />
+              </p:inputText>
+              <p:messages for="inputparameter" />
+            </div>
+          </div>
+        
+        </p:panel>
+      </div>
+      
+      <div class="col-md-6">
+      </div>
+      
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p:panel header="List of elements already present..">
+          <p:dataList value="#{indexView.resources}" var="value" type="ordered">
+            <h:outputText value="#{value}" />
+          </p:dataList>
+        </p:panel>
+      </div>
+      
+      <div class="col-md-6">
+       
+      </div>
+      
+    </div>
+  </div>
+</h:form>
+
+</ui:define>
+</ui:composition>
