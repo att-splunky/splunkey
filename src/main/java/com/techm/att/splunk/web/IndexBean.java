@@ -1,5 +1,6 @@
 package com.techm.att.splunk.web;
 
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -14,12 +15,16 @@ public class IndexBean {
 	@Autowired
 	private IndexView indexView;
 	
+	
 	public void submit() {
 		SplunkSearchResp.init(indexView.getConversationid().trim(), indexView.getInputparameter().trim());
 		System.out.println("Check resource created or not!!!");
 		indexView.getSubmittedValues().add(indexView.getInputparameter());
 		indexView.getSubmittedValues().add(indexView.getConversationid());
-	    
+		//System.out.println("Key Set:::: "+ SplunkSearchResp.getListMap().keySet());
+		
+		indexView.setListMap(SplunkSearchResp.getListMap());
+		
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Value submitted."));
 	}
 	
@@ -28,5 +33,5 @@ public class IndexBean {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form reset."));
 	}
-	
+
 }

@@ -2,11 +2,14 @@ package com.techm.att.splunk.web;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.techm.att.bone.jsf.ViewScopedComponent;
+import com.techm.rest.client.ConversationBean;
 
 @ViewScopedComponent("indexView")
 public class IndexView implements Serializable {
@@ -16,6 +19,8 @@ public class IndexView implements Serializable {
     private List<String> submittedValues = new ArrayList<>();
     
     private Set<String> resources = new HashSet<String>();
+    
+    private Map<String, List<ConversationBean>> listMap = new HashMap<String, List<ConversationBean>>(); 
     
 	private String conversationid;
 	private String inputparameter;
@@ -50,6 +55,14 @@ public class IndexView implements Serializable {
 
 	public void setResources(Set<String> resources) {
 		this.resources = resources;
+	}
+
+	public Map<String, List<ConversationBean>> getListMap() {
+		return listMap;
+	}
+
+	public void setListMap(Map<String, List<ConversationBean>> listMap) {
+		this.listMap = listMap;
 	}
 	
 	

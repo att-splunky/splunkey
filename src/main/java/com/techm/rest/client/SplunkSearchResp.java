@@ -10,9 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -24,14 +28,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-public class SplunkSearchResp {
 
+
+
+public class SplunkSearchResp {
+	
 	private String searchUrl = "http://api360.web.att.com/atw-service/log/splunk/search?search=";
 	private String searchText;
 	private String requestParamters;
 	private Set<String> paramters= null;
 	final String rootFolder = createRootFolder("resource/");
+	private ConversationBean conversationBean = null;
 	
+	private List<ConversationBean> xmlList = null;
+	private static Map<String, List<ConversationBean>> listMap= new HashMap<String, List<ConversationBean>>();
+
+	public static Map<String, List<ConversationBean>> getListMap() {
+		return listMap;
+	}
+
+	public static void setListMap(Map<String, List<ConversationBean>> listMap) {
+		SplunkSearchResp.listMap = listMap;
+	}
+
 	public SplunkSearchResp(String searchText, String requestParamters) {
 		super();
 		this.searchText = searchText;
@@ -59,7 +78,7 @@ public class SplunkSearchResp {
 		new SplunkSearchResp(searchTxt, requestParamters).getLogfromSplunkWithText();
 	}
 	public void getLogfromSplunkWithText() {
-		System.out.println("inside the method::: "+this.searchText+" :: "+this.requestParamters);
+		//System.out.println("inside the method::: "+this.searchText+" :: "+this.requestParamters);
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getMessageConverters().add(
 				new ByteArrayHttpMessageConverter());
@@ -69,26 +88,31 @@ public class SplunkSearchResp {
 
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
 		//String rootFolder = "resource/";
+		xmlList = new ArrayList<ConversationBean>();
+		
 		try {
 			ResponseEntity<byte[]> response = restTemplate.exchange(searchUrl
 					+ searchText, HttpMethod.GET, entity, byte[].class, "1");
 
 			// if (response.getStatusCode() == HttpStatus.OK)
 			{
-				System.out.println("Saving to Resources___ "+ requestParamters);
+				//System.out.println("Saving to Resources___ "+ requestParamters);
 				ResourceLoader.saveProperties(requestParamters);
 				
 				
 				new File(rootFolder + searchText + "/").mkdirs();
 				//new File(rootFolder + searchText + "/output").mkdirs();
 				
-			
-				
+								
 				Files.write(Paths.get(rootFolder+"/splunklogSearchText4.txt"),
 						response.getBody());
 
 				final String str = new String(response.getBody(),
 						StandardCharsets.UTF_8);
+				conversationBean = new ConversationBean();
+				conversationBean.setName("splunklogSearchText_log.txt");
+				conversationBean.setData(str);
+				xmlList.add(conversationBean);
 				
 				// String(Files.readAllBytes(Paths.get("resource/splunklogSearchText2.txt")),StandardCharsets.UTF_8);
 				
@@ -96,11 +120,15 @@ public class SplunkSearchResp {
 				for (final String queryParam : paramters) {
 					if (queryParam.length() > 0) {
 						if (str.contains(queryParam)) {
-							System.out.println(queryParam + " :: exist");
+							//System.out.println(queryParam + " :: exist");
 
 							String res = executeParamXml(str, queryParam);
 
 							if (res != null) {
+								conversationBean = new ConversationBean();
+								conversationBean.setName(queryParam + ".xml");
+								conversationBean.setData(res);
+								xmlList.add(conversationBean);
 								if(queryParam.endsWith("Response")){
 								Files.write(
 										Paths.get(rootFolder + searchText
@@ -144,7 +172,9 @@ public class SplunkSearchResp {
 						Paths.get(rootFolder + searchText + "/"
 								+ searchText + "_respone.xml"),
 						response1.getBytes(StandardCharsets.UTF_8)); */
-
+				
+				listMap.put(searchText, xmlList);
+				//System.out.println("Mapp22 ::::::::::: "+listMap );	
 				
 				try {
 					Set<String> uniqConvId = null;
@@ -157,7 +187,7 @@ public class SplunkSearchResp {
 						
 						if (!uniqConvId.isEmpty()) {
 							for (String ss : uniqConvId) {
-								System.out.println("Conv Id:::   "+ss);
+								//System.out.println("Conv Id:::   "+ss);
 								if (ss.trim().startsWith("spm2async~")){
 									getAsyncLogfromSplunkWithText(restTemplate,
 											entity, ss);
@@ -177,9 +207,9 @@ public class SplunkSearchResp {
 				 * 
 				 * if(!uniqConvId.isEmpty()){ for(String ss: uniqConvId)
 				 * getAsyncLogfromSplunkWithText(restTemplate,entity,ss); }
-				 */
-
+				 */				
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			StringWriter write = new StringWriter();
@@ -190,6 +220,11 @@ public class SplunkSearchResp {
 				Files.write(Paths.get(rootFolder + searchText + "/error/"
 						+ searchText + "_error.txt"), write.toString()
 						.getBytes());
+				conversationBean = new ConversationBean();
+				conversationBean.setName("error");
+				conversationBean.setData(write.toString());
+				xmlList.add(conversationBean);
+				listMap.put(searchText, xmlList);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -197,7 +232,7 @@ public class SplunkSearchResp {
 		}
 
 	}
-
+	
 	private String executeParamXml(String mainString, String queryParam) {
 		// TODO Auto-generated method stub
 
@@ -206,21 +241,21 @@ public class SplunkSearchResp {
 			if (!mainString.contains("<" + queryParam.trim())) {
 				String nameSpace = mainString.split(mainString
 						.substring(mainString.indexOf(queryParam.trim())))[0];
-				System.out.println(queryParam + " *************namespace**** "
-						+ nameSpace);
+				//System.out.println(queryParam + " *************namespace**** "
+				//		+ nameSpace);
 				if (nameSpace.substring(nameSpace.lastIndexOf("<")).contains(
 						":")) {
 					nameSpace = nameSpace.substring(nameSpace.lastIndexOf("<"))
 							.split(":")[0];
 					nameSpace = nameSpace.replaceAll("</", "");
-					System.out.println("nameSpace ::: " + nameSpace);
+					//System.out.println("nameSpace ::: " + nameSpace);
 					final String openStr = "<" + nameSpace + ":"
 							+ queryParam.trim();
 					final String closedStr = "</" + nameSpace + ":"
 							+ queryParam.trim() + ">";
 					res = mainString.substring(mainString.indexOf(openStr),
 							mainString.indexOf(closedStr) + closedStr.length());
-					System.out.println("With nameSpace String ::: " + res);
+					//System.out.println("With nameSpace String ::: " + res);
 				}
 			} else {
 				final String openStr = "<" + queryParam.trim();
@@ -264,6 +299,7 @@ public class SplunkSearchResp {
 	}
 	public void getAsyncLogfromSplunkWithText(RestTemplate restTemplate, HttpEntity<String> entity, String searchText) {
 		//String rootFolder = "resource/";
+		xmlList = new ArrayList<ConversationBean>();
 		try {
 			ResponseEntity<byte[]> response = restTemplate.exchange(searchUrl	+ searchText, HttpMethod.GET, entity, byte[].class, "1");
 
@@ -278,6 +314,11 @@ public class SplunkSearchResp {
 				String str = new String(response.getBody(),	StandardCharsets.UTF_8);
 				// String str = new String(Files.readAllBytes(Paths.get("resource/splunklogSearchText2.txt")),StandardCharsets.UTF_8);
 				
+				conversationBean = new ConversationBean();
+				conversationBean.setName("spm2Async_log.txt");
+				conversationBean.setData(str);
+				xmlList.add(conversationBean);
+				
 				paramters = ResourceLoader.getResources();
 				for (final String queryParam : paramters) {
 					if (queryParam.length() > 0) {
@@ -287,6 +328,11 @@ public class SplunkSearchResp {
 							String res = executeParamXml(str, queryParam);
 
 							if (res != null) {
+								conversationBean = new ConversationBean();
+								conversationBean.setName(queryParam+ ".xml");
+								conversationBean.setData(res);
+								xmlList.add(conversationBean);
+								
 								if(queryParam.endsWith("Response")){
 								Files.write(
 										Paths.get(rootFolder + searchText
@@ -331,7 +377,7 @@ public class SplunkSearchResp {
 								+ searchText + "_respone.xml"),
 						response1.getBytes(StandardCharsets.UTF_8));*/
 				
-				
+				listMap.put(searchText, xmlList);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -342,6 +388,11 @@ public class SplunkSearchResp {
 				new File(rootFolder + searchText + "/error").mkdirs();
 				Files.write(Paths.get(rootFolder + searchText + "/error/"
 						+ searchText + "_error.txt"), write.toString().getBytes());
+				conversationBean = new ConversationBean();
+				conversationBean.setName("error");
+				conversationBean.setData(write.toString());
+				xmlList.add(conversationBean);
+				listMap.put(searchText, xmlList);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

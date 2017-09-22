@@ -86,7 +86,20 @@
       </div>
       
       <div class="col-md-6">
-       
+        <p:panel header="Search Details here..">
+          <h:dataTable value="#{indexView.listMap.entrySet().toArray()}" var="entry">
+		    <h:column>#{entry.key}</h:column>
+		    <!-- <h:column>#{entry.value}</h:column> -->
+		    <h:column>
+		    	<p:dataList value="#{entry.value}" var="value" type="ordered">
+            		<!-- <h:outputText value="#{value.name}" /> -->
+            		<h:outputLink value="#{value.name}" target="_blank">
+            			<h:outputText value="#{value.name}" />
+            		</h:outputLink>
+          		</p:dataList>
+          </h:column>
+		  </h:dataTable>
+        </p:panel>
       </div>
       
     </div>
