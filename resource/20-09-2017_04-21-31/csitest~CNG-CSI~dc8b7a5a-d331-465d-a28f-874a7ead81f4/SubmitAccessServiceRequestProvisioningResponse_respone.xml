@@ -1,6 +1,0 @@
-<SubmitAccessServiceRequestProvisioningResponse xmlns="http://csi.cingular.com/CSI/Namespaces/Container/Public/SubmitAccessServiceRequestProvisioningResponse.xsd" xmlns:cng="http://csi.att.com/CSI/Namespaces/NetworkManagement/Types/Public/CommonDataModel.xsd">
-<Response>
-<cng:code>0</cng:code>
-<cng:description>Success</cng:description>
-</Response>
-</SubmitAccessServiceRequestProvisioningResponse>
