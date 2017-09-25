@@ -11,8 +11,8 @@ import java.util.Set;
 import com.techm.att.bone.spring.SessionScopedComponent;
 import com.techm.rest.client.ConversationBean;
 
-@SessionScopedComponent("indexView")
-public class IndexView implements Serializable {
+@SessionScopedComponent("indexSession")
+public class IndexSession implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

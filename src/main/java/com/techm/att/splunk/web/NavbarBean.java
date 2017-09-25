@@ -18,7 +18,7 @@ public class NavbarBean {
     private HttpServletRequest request;
     
     @Autowired
-	private IndexView indexView;
+	private IndexSession indexSession;
     
     private String requestPath; 
     
@@ -35,7 +35,7 @@ public class NavbarBean {
     private String resolveActiveMenuItem() {
         if (pathMatches("/;/index.*")) {
         	try {
-				indexView.setResources(ResourceLoader.getResources());
+        		indexSession.setResources(ResourceLoader.getResources());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

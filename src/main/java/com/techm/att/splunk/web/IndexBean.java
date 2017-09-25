@@ -14,31 +14,31 @@ import com.techm.rest.client.SplunkSearchResp;
 public class IndexBean {
     
 	@Autowired
-	private IndexView indexView;
+	private IndexSession indexSession;
 	
 	
 	public void submit() {
-		SplunkSearchResp.init(indexView.getConversationid().trim(), indexView.getInputparameter().trim());
+		SplunkSearchResp.init(indexSession.getConversationid().trim(), indexSession.getInputparameter());
 		System.out.println("Check resource created or not!!!");
-		indexView.getSubmittedValues().add(indexView.getInputparameter());
-		indexView.getSubmittedValues().add(indexView.getConversationid());
+		indexSession.getSubmittedValues().add(indexSession.getInputparameter());
+		indexSession.getSubmittedValues().add(indexSession.getConversationid());
 		//System.out.println("Key Set:::: "+ SplunkSearchResp.getListMap().keySet());
 		
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Value submitted."));
 	}
 	
 	public void reset() {
-	   // indexView.getSubmittedValues().clear();
-		System.out.println("ResultList in indexView:: "+ ResourceLoader.getResultXMLFiles());
+	   // indexSession.getSubmittedValues().clear();
+		System.out.println("ResultList in indexSession:: "+ ResourceLoader.getResultXMLFiles());
 		
-		indexView.setResultList(ResourceLoader.getResultXMLFiles());
+		indexSession.setResultList(ResourceLoader.getResultXMLFiles());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form reset."));
 	}
 	
 	
 	
 	public void poulateRecords(){
-		indexView.setListMap(SplunkSearchResp.getListMap());
+		indexSession.setListMap(SplunkSearchResp.getListMap());
 	}
 
 }
