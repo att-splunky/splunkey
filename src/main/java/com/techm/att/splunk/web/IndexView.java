@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.techm.att.bone.jsf.ViewScopedComponent;
+import com.techm.att.bone.spring.SessionScopedComponent;
 import com.techm.rest.client.ConversationBean;
 
-@ViewScopedComponent("indexView")
+@SessionScopedComponent("indexView")
 public class IndexView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
