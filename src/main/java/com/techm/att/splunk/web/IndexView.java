@@ -20,7 +20,9 @@ public class IndexView implements Serializable {
     
     private Set<String> resources = new HashSet<String>();
     
-    private Map<String, List<ConversationBean>> listMap = new HashMap<String, List<ConversationBean>>(); 
+    private Map<String, List<ConversationBean>> listMap = new HashMap<String, List<ConversationBean>>();
+    
+    private List<String> resultList = new ArrayList<String>();
     
 	private String conversationid;
 	private String inputparameter;
@@ -64,6 +66,16 @@ public class IndexView implements Serializable {
 	public void setListMap(Map<String, List<ConversationBean>> listMap) {
 		this.listMap = listMap;
 	}
+
+	public List<String> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<String> resultList) {
+		this.resultList = resultList;
+	}
+
+	
 	
 	
 }

@@ -37,7 +37,7 @@ public class SplunkSearchResp {
 	private String searchText;
 	private String requestParamters;
 	private Set<String> paramters= null;
-	final String rootFolder = createRootFolder("resource/");
+	final String rootFolder = createRootFolder("resources/");
 	private ConversationBean conversationBean = null;
 	
 	private List<ConversationBean> xmlList = null;

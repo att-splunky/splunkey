@@ -48,10 +48,15 @@
       </div>
       
       <div class="col-md-6">
-        <p:panel header="Searched values saved in view scope">
+        <!-- <p:panel header="Searched values saved in view scope">
           <p:dataList value="#{indexView.submittedValues}" var="value" type="ordered">
             <h:outputText value="#{value}" />
           </p:dataList>
+        </p:panel> -->
+        <p:panel header="Searched values saved in view scope">
+          <p:dataList value="#{indexView.resultList}" var="value">
+		    <h:outputText value="#{value}" />
+		  </p:dataList>
         </p:panel>
       </div>
       

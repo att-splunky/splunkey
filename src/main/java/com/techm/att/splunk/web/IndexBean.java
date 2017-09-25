@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.techm.att.bone.spring.RequestScopedComponent;
+import com.techm.rest.client.ResourceLoader;
 import com.techm.rest.client.SplunkSearchResp;
 
 @RequestScopedComponent("indexBean")
@@ -23,15 +24,19 @@ public class IndexBean {
 		indexView.getSubmittedValues().add(indexView.getConversationid());
 		//System.out.println("Key Set:::: "+ SplunkSearchResp.getListMap().keySet());
 		
-		indexView.setListMap(SplunkSearchResp.getListMap());
-		
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Value submitted."));
 	}
 	
 	public void reset() {
-	    indexView.getSubmittedValues().clear();
-
+	   // indexView.getSubmittedValues().clear();
+		System.out.println("ResultList in indexView:: "+ ResourceLoader.getResultXMLFiles());
+		
+		indexView.setResultList(ResourceLoader.getResultXMLFiles());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form reset."));
+	}
+	
+	public void poulateRecords(){
+		indexView.setListMap(SplunkSearchResp.getListMap());
 	}
 
 }
