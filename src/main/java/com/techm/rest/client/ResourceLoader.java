@@ -106,7 +106,7 @@ public class ResourceLoader{
 	
 	public static List<String> getResultXMLFiles() {
 		List<String> fileList = new ArrayList<String>();
-		try (Stream<Path> filePathStream = Files.walk(Paths.get("/resources"))) {
+		try (Stream<Path> filePathStream = Files.walk(Paths.get("main/resources"))) {
 			filePathStream.forEach(filePath -> {
 				if (Files.isRegularFile(filePath)) {
 					// System.out.println(filePath);

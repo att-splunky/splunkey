@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui">    
+
+<ui:define name="body">
+
+<h:form id="form">
+  <div class="container">
+    
+    <div>
+      <p:messages globalOnly="true" />
+    </div>
+   <div class="row">
+      <div class="col-md-6">
+        <p:panel header="Multiple inputs with commma(,) separate" styleClass="form-horizontal">
+        <div class="form-group">
+            <p:outputLabel value="Input Parameter" for="inputparameter" styleClass="col-sm-3 control-label" />
+            <div class="col-sm-9">
+              <p:inputText id="inputparameter" value="#{indexView.inputparameter}" pt:placeholder="Input parameters" required="false">
+                <f:validateLength minimum="0" />
+              </p:inputText>
+              <p:messages for="inputparameter" />
+            </div>
+          </div>
+        
+        </p:panel>
+      
+        <p:panel header="List of elements already present.." visible="#{!indexView.resources.isEmpty()}">
+          <p:dataList value="#{indexView.resources}" var="value" type="ordered">
+            <h:outputText value="#{value}" />
+          </p:dataList>
+        </p:panel>
+      </div>
+      
+    </div>
+  </div>
+</h:form>
+
+</ui:define>
+</ui:composition>

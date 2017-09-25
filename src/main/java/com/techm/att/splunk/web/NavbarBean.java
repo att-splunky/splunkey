@@ -41,8 +41,8 @@ public class NavbarBean {
 				e.printStackTrace();
 			}
             return "home";
-        } else if (pathMatches("/cities/**")) {
-            return "cities";
+        } else if (pathMatches("/config/**")) {
+            return "config";
         }
         
         return "unknown";

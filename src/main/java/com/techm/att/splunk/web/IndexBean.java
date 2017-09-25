@@ -35,6 +35,8 @@ public class IndexBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form reset."));
 	}
 	
+	
+	
 	public void poulateRecords(){
 		indexView.setListMap(SplunkSearchResp.getListMap());
 	}

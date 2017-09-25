@@ -37,7 +37,7 @@ public class SplunkSearchResp {
 	private String searchText;
 	private String requestParamters;
 	private Set<String> paramters= null;
-	final String rootFolder = createRootFolder("resources/");
+	final String rootFolder = createRootFolder("main/resources/");
 	private ConversationBean conversationBean = null;
 	
 	private List<ConversationBean> xmlList = null;
@@ -65,13 +65,7 @@ public class SplunkSearchResp {
 		return root + subfolder;
 	}
 
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//String searchTxt = "csitest~CNG-CSI~c6b6a817-c1bd-4bb8-a91c-650d8d746c87";
-		String searchTxt = "csitest~CNG-CSI~c703d488-9c45-4f5f-be22-aa4f1f884a01";
-		StringBuffer requestParamters = null;	
-		new SplunkSearchResp(searchTxt, requestParamters).getLogfromSplunkWithText();
-	}*/
+	
 	public static void init(String searchTxt, String requestParamters){
 		System.out.println("_________  InPrgress...\n");
 		System.out.println(searchTxt+" :: "+requestParamters);

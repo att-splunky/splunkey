@@ -11,9 +11,6 @@
 
 <h:form id="form">
   <div class="container">
-    <div>
-      <h1>SPLUNKY</h1>
-    </div>
     
     <div class="row">
       <div class="col-md-6">
@@ -43,55 +40,15 @@
                   icon="fa fa-home" /> -->
             </div>
           </div>          
-          
-        </p:panel>
-      </div>
-      
-      <div class="col-md-6">
-        <!-- <p:panel header="Searched values saved in view scope">
-          <p:dataList value="#{indexView.submittedValues}" var="value" type="ordered">
-            <h:outputText value="#{value}" />
-          </p:dataList>
-        </p:panel> -->
-        <p:panel header="Searched values saved in view scope">
-          <p:dataList value="#{indexView.resultList}" var="value">
-		    <h:outputText value="#{value}" />
-		  </p:dataList>
         </p:panel>
       </div>
       
     </div>
-	<div class="row">
-      <div class="col-md-6">
-        <p:panel header="Multiple inputs with commma(,) separate" styleClass="form-horizontal">
-        <div class="form-group">
-            <p:outputLabel value="Input Parameter" for="inputparameter" styleClass="col-sm-3 control-label" />
-            <div class="col-sm-9">
-              <p:inputText id="inputparameter" value="#{indexView.inputparameter}" pt:placeholder="Input parameters" required="false">
-                <f:validateLength minimum="0" />
-              </p:inputText>
-              <p:messages for="inputparameter" />
-            </div>
-          </div>
-        
-        </p:panel>
-      </div>
-      
-      <div class="col-md-6">
-      </div>
-      
-    </div>
+	
     <div class="row">
-      <div class="col-md-6">
-        <p:panel header="List of elements already present..">
-          <p:dataList value="#{indexView.resources}" var="value" type="ordered">
-            <h:outputText value="#{value}" />
-          </p:dataList>
-        </p:panel>
-      </div>
       
       <div class="col-md-6">
-        <p:panel header="Search Details here..">
+        <p:panel header="Search Details here.." visible="#{!indexView.listMap.entrySet().isEmpty()}">
           <h:dataTable value="#{indexView.listMap.entrySet().toArray()}" var="entry">
 		    <h:column>#{entry.key}</h:column>
 		    <!-- <h:column>#{entry.value}</h:column> -->
