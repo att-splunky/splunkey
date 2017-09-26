@@ -28,16 +28,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import com.techm.att.splunk.constants.SplunkyConstants;
+
 
 
 
 public class SplunkSearchResp {
 	
-	private String searchUrl = "http://api360.web.att.com/atw-service/log/splunk/search?search=";
+	//private String searchUrl = "http://api360.web.att.com/atw-service/log/splunk/search?search=";
+	private final String searchUrl = SplunkyConstants.SPLUNKY_URL;
 	private String searchText;
 	private String requestParamters;
 	private Set<String> paramters= null;
-	final String rootFolder = createRootFolder("resources/");
+	//final String rootFolder = createRootFolder("resources/");
+	
 	private ConversationBean conversationBean = null;
 	
 	private List<ConversationBean> xmlList = null;
@@ -82,7 +86,7 @@ public class SplunkSearchResp {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getMessageConverters().add(
 				new ByteArrayHttpMessageConverter());
-
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
 
@@ -100,11 +104,10 @@ public class SplunkSearchResp {
 				ResourceLoader.saveProperties(requestParamters);
 				
 				
-				new File(rootFolder + searchText + "/").mkdirs();
+				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 				//new File(rootFolder + searchText + "/output").mkdirs();
 				
-								
-				Files.write(Paths.get(rootFolder+"/splunklogSearchText4.txt"),
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH+"/splunklogSearchText4.txt"),
 						response.getBody());
 
 				final String str = new String(response.getBody(),
@@ -131,14 +134,14 @@ public class SplunkSearchResp {
 								xmlList.add(conversationBean);
 								if(queryParam.endsWith("Response")){
 								Files.write(
-										Paths.get(rootFolder + searchText
-												+ "/" + queryParam
-												+ "_respone.xml"),
+										Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
+												+ "/"+queryParam
+												+ ".xml"),
 										res.getBytes(StandardCharsets.UTF_8));
 								}else{
 									Files.write(
-											Paths.get(rootFolder + searchText
-													+ "/" + queryParam
+											Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
+													+ "/"+queryParam
 													+ ".xml"),
 											res.getBytes(StandardCharsets.UTF_8));
 								}
@@ -158,7 +161,7 @@ public class SplunkSearchResp {
 							dirtyRequest[i].lastIndexOf(">") + 1);
 					System.out.println("Request :[" + i + "]\n" + request);
 					Files.write(
-							Paths.get(rootFolder + searchText + "/"
+							Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/"
 									+ searchText + "_" + i + ".xml"),
 							request.getBytes(StandardCharsets.UTF_8));
 
@@ -169,7 +172,7 @@ public class SplunkSearchResp {
 						.indexOf("<"));
 				System.out.println("Response : \n" + response1);
 				Files.write(
-						Paths.get(rootFolder + searchText + "/"
+						Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/"
 								+ searchText + "_respone.xml"),
 						response1.getBytes(StandardCharsets.UTF_8)); */
 				
@@ -216,9 +219,11 @@ public class SplunkSearchResp {
 			PrintWriter out = new PrintWriter(write);
 			e.printStackTrace(out);
 			try {
-				new File(rootFolder + searchText + "/error").mkdirs();
-				Files.write(Paths.get(rootFolder + searchText + "/error/"
-						+ searchText + "_error.txt"), write.toString()
+				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText 
+						//+ "/error").mkdirs();
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText 
+						//+ "/error/"
+						+ "/"+searchText + "_error.txt"), write.toString()
 						.getBytes());
 				conversationBean = new ConversationBean();
 				conversationBean.setName("error");
@@ -273,7 +278,7 @@ public class SplunkSearchResp {
 	public Set<String> convert_file_to_string_java_bufferedreader()
 			throws IOException {
 
-		File file = new File(rootFolder + "splunklogSearchText4.txt");
+		File file = new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/splunklogSearchText4.txt");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		Set<String> uniqAsyncConverId = new HashSet<String>();
@@ -306,10 +311,10 @@ public class SplunkSearchResp {
 			//if (response.getStatusCode() == HttpStatus.OK) 
 			{
 
-				new File(rootFolder + searchText + "/").mkdirs();
-				new File(rootFolder + searchText + "/").mkdirs();
+				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
+				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 
-				Files.write(Paths.get(rootFolder + searchText+".txt"),	response.getBody());
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/"+searchText+".txt"),	response.getBody());
 
 				String str = new String(response.getBody(),	StandardCharsets.UTF_8);
 				// String str = new String(Files.readAllBytes(Paths.get("resource/splunklogSearchText2.txt")),StandardCharsets.UTF_8);
@@ -335,14 +340,14 @@ public class SplunkSearchResp {
 								
 								if(queryParam.endsWith("Response")){
 								Files.write(
-										Paths.get(rootFolder + searchText
-												+ "/" + queryParam
-												+ "_respone.xml"),
+										Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
+												+ "/"+queryParam
+												+ ".xml"),
 										res.getBytes(StandardCharsets.UTF_8));
 								}else{
 									Files.write(
-											Paths.get(rootFolder + searchText
-													+ "/" + queryParam
+											Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
+													+ "/"+queryParam
 													+ ".xml"),
 											res.getBytes(StandardCharsets.UTF_8));
 								}
@@ -362,7 +367,7 @@ public class SplunkSearchResp {
 							dirtyRequest[i].lastIndexOf(">") + 1);
 					System.out.println("Request :[" + i + "]\n" + request);
 					Files.write(
-							Paths.get(rootFolder + searchText + "/"
+							Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/"
 									+ searchText + "_" + i + ".xml"),
 							request.getBytes(StandardCharsets.UTF_8));
 
@@ -373,7 +378,7 @@ public class SplunkSearchResp {
 						.indexOf("<"));
 				System.out.println("Response : \n" + response1);
 				Files.write(
-						Paths.get(rootFolder + searchText + "/"
+						Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/"
 								+ searchText + "_respone.xml"),
 						response1.getBytes(StandardCharsets.UTF_8));*/
 				
@@ -385,9 +390,11 @@ public class SplunkSearchResp {
 			PrintWriter out = new PrintWriter(write);
 			e.printStackTrace(out);
 			try {
-				new File(rootFolder + searchText + "/error").mkdirs();
-				Files.write(Paths.get(rootFolder + searchText + "/error/"
-						+ searchText + "_error.txt"), write.toString().getBytes());
+				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText 
+				//		+ "/error").mkdirs();
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText 
+						//+ "/error/"
+						+ "/"+searchText + "_error.txt"), write.toString().getBytes());
 				conversationBean = new ConversationBean();
 				conversationBean.setName("error");
 				conversationBean.setData(write.toString());

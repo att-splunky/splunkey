@@ -36,6 +36,7 @@ public class NavbarBean {
         if (pathMatches("/;/index.*")) {
         	try {
 				indexView.setResources(ResourceLoader.getResources());
+				indexView.setResultMap(ResourceLoader.getResultXMLFiles());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.techm.att.splunk.web;
 
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -12,6 +13,7 @@ import com.techm.rest.client.SplunkSearchResp;
 
 @RequestScopedComponent("indexBean")
 public class IndexBean {
+	
     
 	@Autowired
 	private IndexView indexView;
@@ -25,8 +27,10 @@ public class IndexBean {
 		//System.out.println("Key Set:::: "+ SplunkSearchResp.getListMap().keySet());
 		
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Value submitted."));
+		indexView.setResultMap(ResourceLoader.getResultXMLFiles());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Results fetched."));
 	}
-	
+	@PostConstruct
 	public void refresh() {
 	   // indexView.getSubmittedValues().clear();
 		System.out.println("ResultList in indexView:: "+ ResourceLoader.getResultXMLFiles());
@@ -35,8 +39,7 @@ public class IndexBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form refreshed."));
 	}
 	
-	public void poulateRecords(){
-		indexView.setListMap(SplunkSearchResp.getListMap());
-	}
+	
+	
 
 }

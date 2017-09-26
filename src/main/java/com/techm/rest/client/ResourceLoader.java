@@ -17,6 +17,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 
+import com.techm.att.splunk.constants.SplunkyConstants;
+
 public class ResourceLoader{
 	static File file = null;
 	public static Set<String> getResources() throws IOException {
@@ -105,15 +107,12 @@ public class ResourceLoader{
 	public static Map<String,String> getResultXMLFiles() {
 		//List<String> fileList = new ArrayList<String>();
 		Map<String, String> fileMap = new  HashMap<String, String>();
-		try (Stream<Path> filePathStream = Files.walk(Paths.get("resources"))) {
+		try (Stream<Path> filePathStream = Files.walk(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH))) {
 			filePathStream.forEach(filePath -> {
 				if (Files.isRegularFile(filePath)) {
-					// System.out.println(filePath);
-					// System.out.println(filePath.getFileName());
 					try {
-						System.out.println("normal.." + filePath.toString());
-						System.out.println("normal.." + filePath.toString().replace("\\", "/"));
-						fileMap.put(filePath.getFileName().toString(), filePath.toString().replace("\\", "/"));
+						//fileMap.put(filePath.getFileName().toString(), filePath.toString().replace("\\", "/"));
+						fileMap.put(filePath.getFileName().toString(), "resources/"+filePath.getFileName().toString());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
