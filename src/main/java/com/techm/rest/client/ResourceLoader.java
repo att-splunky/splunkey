@@ -112,7 +112,8 @@ public class ResourceLoader{
 				if (Files.isRegularFile(filePath)) {
 					try {
 						//fileMap.put(filePath.getFileName().toString(), filePath.toString().replace("\\", "/"));
-						fileMap.put(filePath.getFileName().toString(), "resources/"+filePath.getFileName().toString());
+						
+						fileMap.put(getKey(filePath), "resources/temp/"+filePath.getFileName().toString());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -125,6 +126,18 @@ public class ResourceLoader{
 			e.printStackTrace();
 		}
 		return fileMap;
+	}
+
+	private static String getKey(Path filePath) {
+		// TODO Auto-generated method stub
+		String key = "";
+		if(!filePath.getFileName().toString().contains(".jpg")) {
+			key = filePath.getFileName().toString();
+		}
+		/*if (!filePath.getFileName().toString().contains(".css")){
+			key = filePath.getFileName().toString();
+		}*/
+		return key;
 	}
 }
 
