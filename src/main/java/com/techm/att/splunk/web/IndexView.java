@@ -22,7 +22,9 @@ public class IndexView implements Serializable {
     
     private Map<String, List<ConversationBean>> listMap = new HashMap<String, List<ConversationBean>>();
     
-    private List<String> resultList = new ArrayList<String>();
+   // private List<String> resultList = new ArrayList<String>();
+    
+    private Map<String,String> resultMap = new HashMap<String,String>();
     
 	private String conversationid;
 	private String inputparameter;
@@ -67,13 +69,15 @@ public class IndexView implements Serializable {
 		this.listMap = listMap;
 	}
 
-	public List<String> getResultList() {
-		return resultList;
+	public Map<String, String> getResultMap() {
+		return resultMap;
 	}
 
-	public void setResultList(List<String> resultList) {
-		this.resultList = resultList;
+	public void setResultMap(Map<String, String> resultMap) {
+		this.resultMap = resultMap;
 	}
+
+	
 
 	
 	

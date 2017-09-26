@@ -27,12 +27,12 @@ public class IndexBean {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Value submitted."));
 	}
 	
-	public void reset() {
+	public void refresh() {
 	   // indexView.getSubmittedValues().clear();
 		System.out.println("ResultList in indexView:: "+ ResourceLoader.getResultXMLFiles());
 		
-		indexView.setResultList(ResourceLoader.getResultXMLFiles());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form reset."));
+		indexView.setResultMap(ResourceLoader.getResultXMLFiles());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Form refreshed."));
 	}
 	
 	public void poulateRecords(){

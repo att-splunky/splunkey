@@ -37,8 +37,8 @@
             <div class="col-sm-offset-3 col-sm-9">
               <p:commandButton value="Search" action="#{indexBean.submit}" ajax="false"
                   icon="fa fa-search" />
-              <p:commandButton value="Reset" actionListener="#{indexBean.reset}" update="@form"
-                  icon="fa fa-trash" immediate="true" /><!-- 
+              <p:commandButton value="Refresh" actionListener="#{indexBean.refresh}" update="@form"
+                  icon="fa fa-refresh" immediate="true" /><!-- 
               <p:button value="Go to home" outcome="/index" 
                   icon="fa fa-home" /> -->
             </div>
@@ -54,9 +54,14 @@
           </p:dataList>
         </p:panel> -->
         <p:panel header="Searched values saved in view scope">
-          <p:dataList value="#{indexView.resultList}" var="value">
-		    <h:outputText value="#{value}" />
-		  </p:dataList>
+         <!-- <h:dataTable value="#{indexView.resultMap.entrySet().toArray()}" var="entry"> -->
+        <h:dataTable value="#{indexView.resultMap.entrySet().toArray()}" var="entry">
+		    <h:column>
+		    <h:outputLink value="#{entry.value}" target="_blank">
+            			<h:outputText value="#{entry.key}" />
+            		</h:outputLink>
+		    </h:column>
+		  </h:dataTable>
         </p:panel>
       </div>
       

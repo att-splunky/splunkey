@@ -6,17 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ResourceLoader{
@@ -104,14 +102,22 @@ public class ResourceLoader{
 		
 	}*/
 	
-	public static List<String> getResultXMLFiles() {
-		List<String> fileList = new ArrayList<String>();
-		try (Stream<Path> filePathStream = Files.walk(Paths.get("/resources"))) {
+	public static Map<String,String> getResultXMLFiles() {
+		//List<String> fileList = new ArrayList<String>();
+		Map<String, String> fileMap = new  HashMap<String, String>();
+		try (Stream<Path> filePathStream = Files.walk(Paths.get("resources"))) {
 			filePathStream.forEach(filePath -> {
 				if (Files.isRegularFile(filePath)) {
 					// System.out.println(filePath);
 					// System.out.println(filePath.getFileName());
-					fileList.add(filePath.getFileName().toString());
+					try {
+						System.out.println("normal.." + filePath.toString());
+						System.out.println("normal.." + filePath.toString().replace("\\", "/"));
+						fileMap.put(filePath.getFileName().toString(), filePath.toString().replace("\\", "/"));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				}
 			});
@@ -119,7 +125,7 @@ public class ResourceLoader{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return fileList;
+		return fileMap;
 	}
 }
 
