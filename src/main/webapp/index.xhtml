@@ -5,7 +5,8 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-    xmlns:p="http://primefaces.org/ui">    
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">    
 
 <ui:define name="body">
 
@@ -58,8 +59,8 @@
         <h:dataTable value="#{indexView.resultMap.entrySet().toArray()}" var="entry">
 		    <h:column>
 		    <h:outputLink value="#{entry.value}" target="_blank">
-            			<h:outputText value="#{entry.key}" />
-            		</h:outputLink>
+            	<h:outputText value="#{entry.key}" />
+            </h:outputLink>
 		    </h:column>
 		  </h:dataTable>
         </p:panel>
