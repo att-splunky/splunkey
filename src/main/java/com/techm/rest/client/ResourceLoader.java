@@ -3,23 +3,29 @@ package com.techm.rest.client;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.techm.att.splunk.constants.SplunkyConstants;
 
 public class ResourceLoader{
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceLoader.class);
 	static File file = null;
 	public static Set<String> getResources() throws IOException {
 
@@ -106,38 +112,55 @@ public class ResourceLoader{
 	
 	public static Map<String,String> getResultXMLFiles() {
 		//List<String> fileList = new ArrayList<String>();
+		System.out.println("User {} logged in getResultXMLFiles:: "+ SplunkyConstants.USER_LOGIN);
 		Map<String, String> fileMap = new  HashMap<String, String>();
-		try (Stream<Path> filePathStream = Files.walk(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH))) {
+		try (Stream<Path> filePathStream = Files.walk(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH+"/"+SplunkyConstants.USER_LOGIN))) {
 			filePathStream.forEach(filePath -> {
 				if (Files.isRegularFile(filePath)) {
 					try {
 						//fileMap.put(filePath.getFileName().toString(), filePath.toString().replace("\\", "/"));
-						
-						fileMap.put(getKey(filePath), "resources/temp/"+filePath.getFileName().toString());
+						fileMap.put(filePath.getFileName().toString(), "resources/"+SplunkyConstants.USER_LOGIN+"/"+filePath.getFileName().toString());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						LOGGER.info("logger Exception -> "+e.getMessage());
 					}
 
 				}
 			});
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.info("logger IOException -> "+e.getMessage());
 		}
 		return fileMap;
 	}
 
-	private static String getKey(Path filePath) {
+	/*private static String getKey(Path filePath) {
 		// TODO Auto-generated method stub
 		String key = "";
 		if(!filePath.getFileName().toString().contains(".jpg")) {
 			key = filePath.getFileName().toString();
 		}
-		/*if (!filePath.getFileName().toString().contains(".css")){
+		if (!filePath.getFileName().toString().contains(".css")){
 			key = filePath.getFileName().toString();
-		}*/
+		}
 		return key;
-	}
+	}*/
+	
+	/*public static Map<String,String> loadPropertiesMap() {
+		file = new File("userconfig.properties");
+		Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream(file));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			LOGGER.info("IOException err: ",e1.getMessage());
+		}
+		Map<String, String> mapProp = properties.entrySet().stream().collect(
+				Collectors.toMap(
+						e -> (String)e.getKey(),
+						e -> (String)e.getValue()
+						));
+		return mapProp;
+	}	*/
 }
 

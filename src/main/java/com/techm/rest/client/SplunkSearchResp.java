@@ -106,8 +106,10 @@ public class SplunkSearchResp {
 				
 				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 				//new File(rootFolder + searchText + "/output").mkdirs();
-				
-				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH+"/temp/splunklogSearchText4.txt"),
+				if(SplunkyConstants.USER_LOGIN != null){
+					new File(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH)+"/"+SplunkyConstants.USER_LOGIN).mkdir();
+				}
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH+"/"+SplunkyConstants.USER_LOGIN+"/splunklogSearchText4.txt"),
 						response.getBody());
 
 				final String str = new String(response.getBody(),
@@ -135,13 +137,13 @@ public class SplunkSearchResp {
 								if(queryParam.endsWith("Response")){
 								Files.write(
 										Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
-												+ "/temp/"+queryParam
+												+ "/"+SplunkyConstants.USER_LOGIN+"/"+queryParam
 												+ ".xml"),
 										res.getBytes(StandardCharsets.UTF_8));
 								}else{
 									Files.write(
 											Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
-													+ "/temp/"+queryParam
+													+ "/"+SplunkyConstants.USER_LOGIN+"/"+queryParam
 													+ ".xml"),
 											res.getBytes(StandardCharsets.UTF_8));
 								}
@@ -223,7 +225,7 @@ public class SplunkSearchResp {
 						//+ "/error").mkdirs();
 				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText 
 						//+ "/error/"
-						+ "/temp/"+searchText + "_error.txt"), write.toString()
+						+ "/"+SplunkyConstants.USER_LOGIN+"/"+searchText + "_error.txt"), write.toString()
 						.getBytes());
 				conversationBean = new ConversationBean();
 				conversationBean.setName("error");
@@ -278,7 +280,7 @@ public class SplunkSearchResp {
 	public Set<String> convert_file_to_string_java_bufferedreader()
 			throws IOException {
 
-		File file = new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/temp/splunklogSearchText4.txt");
+		File file = new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/"+SplunkyConstants.USER_LOGIN+"/splunklogSearchText4.txt");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		Set<String> uniqAsyncConverId = new HashSet<String>();
@@ -314,7 +316,7 @@ public class SplunkSearchResp {
 				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 
-				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/temp/"+searchText+".txt"),	response.getBody());
+				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH + "/"+SplunkyConstants.USER_LOGIN+"/"+searchText+".txt"),	response.getBody());
 
 				String str = new String(response.getBody(),	StandardCharsets.UTF_8);
 				// String str = new String(Files.readAllBytes(Paths.get("resource/splunklogSearchText2.txt")),StandardCharsets.UTF_8);
@@ -341,13 +343,13 @@ public class SplunkSearchResp {
 								if(queryParam.endsWith("Response")){
 								Files.write(
 										Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
-												+ "/temp/"+queryParam
+												+ "/"+SplunkyConstants.USER_LOGIN+"/"+queryParam
 												+ ".xml"),
 										res.getBytes(StandardCharsets.UTF_8));
 								}else{
 									Files.write(
 											Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText + "/" 
-													+ "/temp/"+queryParam
+													+ "/"+SplunkyConstants.USER_LOGIN+"/"+queryParam
 													+ ".xml"),
 											res.getBytes(StandardCharsets.UTF_8));
 								}
@@ -394,7 +396,7 @@ public class SplunkSearchResp {
 				//		+ "/error").mkdirs();
 				Files.write(Paths.get(SplunkyConstants.SPLUNKY_RESOURCES_PATH //+ searchText 
 						//+ "/error/"
-						+ "/temp/"+searchText + "_error.txt"), write.toString().getBytes());
+						+ "/"+SplunkyConstants.USER_LOGIN+"/"+searchText + "_error.txt"), write.toString().getBytes());
 				conversationBean = new ConversationBean();
 				conversationBean.setName("error");
 				conversationBean.setData(write.toString());

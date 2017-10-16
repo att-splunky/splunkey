@@ -47,7 +47,6 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider {
 //                    .where("path").matches(".*")
                     
                 ;
-
     }
     
 }
