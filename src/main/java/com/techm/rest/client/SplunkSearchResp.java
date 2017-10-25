@@ -31,8 +31,6 @@ import org.springframework.web.client.RestTemplate;
 import com.techm.att.splunk.constants.SplunkyConstants;
 
 
-
-
 public class SplunkSearchResp {
 	
 	//private String searchUrl = "http://api360.web.att.com/atw-service/log/splunk/search?search=";
@@ -93,7 +91,6 @@ public class SplunkSearchResp {
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
 		//String rootFolder = "resource/";
 		xmlList = new ArrayList<ConversationBean>();
-		
 		try {
 			ResponseEntity<byte[]> response = restTemplate.exchange(searchUrl
 					+ searchText, HttpMethod.GET, entity, byte[].class, "1");
@@ -102,8 +99,7 @@ public class SplunkSearchResp {
 			{
 				//System.out.println("Saving to Resources___ "+ requestParamters);
 				ResourceLoader.saveProperties(requestParamters);
-				
-				
+								
 				//new File(SplunkyConstants.SPLUNKY_RESOURCES_PATH + searchText + "/").mkdirs();
 				//new File(rootFolder + searchText + "/output").mkdirs();
 				if(SplunkyConstants.USER_LOGIN != null){
@@ -191,9 +187,9 @@ public class SplunkSearchResp {
 						}
 						
 						if (!uniqConvId.isEmpty()) {
+							//System.out.println("uniqeConversation Logs:: "+uniqConvId);
 							for (String ss : uniqConvId) {
-								//System.out.println("Conv Id:::   "+ss);
-								if (ss.trim().startsWith("spm2async~")){
+								if (ss.trim().startsWith("spm2async~") && !ss.contains("<") && !ss.endsWith("###")){
 									getAsyncLogfromSplunkWithText(restTemplate,
 											entity, ss);
 								}
