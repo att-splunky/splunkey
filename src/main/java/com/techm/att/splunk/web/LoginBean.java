@@ -1,21 +1,56 @@
 package com.techm.att.splunk.web;
 
-import com.techm.att.bone.spring.RequestScopedComponent;
-import com.techm.att.splunk.constants.SplunkyConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@RequestScopedComponent("loginBean")
+import com.techm.att.bone.spring.SessionScopedComponent;
+import com.techm.att.splunk.service.security.UserDetailsServiceImpl;
+
+@SessionScopedComponent("loginBean")
 public class LoginBean {
     
-	
-	
     private static final String EVENT_LOGOUT = "logout";
 
     private static final String EVENT_LOGIN_FAILURE = "loginFailure";
     
     private String event;
     
-    private String errorMessage;
+    
+    
+    
+    public UserDetails getUser() {
+    	 String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    	this.user = userService.loadUserByUsername(name);
+		System.out.println("name .." + name);
+		return user;
+	}
 
+
+	public void setUser(UserDetails user) {
+		if (this.user == null) {
+
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			this.user = userService.loadUserByUsername(name);
+			System.out.println("name .." + name);
+        }
+	}
+
+	private String errorMessage;
+
+    @Autowired
+    UserDetailsServiceImpl userService;
+    
+    private UserDetails user;
+
+    protected UserDetails getCurrentUser() {
+        if (user == null) {
+            user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        return user;
+    }
+    
+    
     public String getEvent() {
         return event;
     }
@@ -30,20 +65,8 @@ public class LoginBean {
 
     // TODO: localize messages
     public void init() {
+    	errorMessage="Successfull Login";
         if (EVENT_LOGOUT.equals(event)) {
-        	
-    		System.out.println("Session Attribute with name [ " + SplunkyConstants.USER_LOGIN);
-        
-        	
-        	System.out.println(" ] has been removed " );
-        	
-        	/*String[] attributeNames = RequestContextHolder.currentRequestAttributes().getAttributeNames(RequestAttributes.SCOPE_SESSION);
-    		for (int i = 0; i < attributeNames.length; i++) {
-    			System.out.println("Session Attribute with Name ["+attributeNames[i]+"] has been removed " );
-    			RequestContextHolder.currentRequestAttributes().removeAttribute(attributeNames[i], RequestAttributes.SCOPE_SESSION);
-    			
-    		}*/
-
             errorMessage = "You are logged out.";
         } else if (EVENT_LOGIN_FAILURE.equals(event)) {
             // TODO: handle different login failure reasons (should be saved in the session by Spring Security)
