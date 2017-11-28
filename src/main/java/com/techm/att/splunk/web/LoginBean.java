@@ -1,8 +1,16 @@
 package com.techm.att.splunk.web;
 
-import com.techm.att.bone.spring.RequestScopedComponent;
+import javax.faces.bean.SessionScoped;
 
-@RequestScopedComponent("loginBean")
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.techm.att.bone.spring.RequestScopedComponent;
+import com.techm.att.bone.spring.SessionScopedComponent;
+import com.techm.att.splunk.service.security.UserDetailsServiceImpl;
+
+@SessionScopedComponent("loginBean")
 public class LoginBean {
     
     private static final String EVENT_LOGOUT = "logout";
@@ -11,8 +19,41 @@ public class LoginBean {
     
     private String event;
     
-    private String errorMessage;
+    
+    
+    
+    public UserDetails getUser() {
+    	 String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    	this.user = userService.loadUserByUsername(name);
+		System.out.println("name .." + name);
+		return user;
+	}
 
+
+	public void setUser(UserDetails user) {
+		if (this.user == null) {
+
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			this.user = userService.loadUserByUsername(name);
+			System.out.println("name .." + name);
+        }
+	}
+
+	private String errorMessage;
+
+    @Autowired
+    UserDetailsServiceImpl userService;
+    
+    private UserDetails user;
+
+    protected UserDetails getCurrentUser() {
+        if (user == null) {
+            user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        return user;
+    }
+    
+    
     public String getEvent() {
         return event;
     }
@@ -27,6 +68,7 @@ public class LoginBean {
 
     // TODO: localize messages
     public void init() {
+    	errorMessage="Successfull Login";
         if (EVENT_LOGOUT.equals(event)) {
             errorMessage = "You are logged out.";
         } else if (EVENT_LOGIN_FAILURE.equals(event)) {
